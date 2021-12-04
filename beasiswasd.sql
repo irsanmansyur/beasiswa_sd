@@ -1,14 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.2
+-- version 5.1.1
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: Nov 04, 2021 at 01:15 AM
--- Server version: 10.1.34-MariaDB
--- PHP Version: 7.0.31
+-- Host: localhost:3306
+-- Waktu pembuatan: 04 Des 2021 pada 06.17
+-- Versi server: 5.7.24
+-- Versi PHP: 7.4.13
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -25,7 +24,7 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `beasiswa`
+-- Struktur dari tabel `beasiswa`
 --
 
 CREATE TABLE `beasiswa` (
@@ -34,7 +33,7 @@ CREATE TABLE `beasiswa` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `beasiswa`
+-- Dumping data untuk tabel `beasiswa`
 --
 
 INSERT INTO `beasiswa` (`kd_beasiswa`, `name`) VALUES
@@ -44,7 +43,32 @@ INSERT INTO `beasiswa` (`kd_beasiswa`, `name`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `kriteria`
+-- Struktur dari tabel `hasil`
+--
+
+CREATE TABLE `hasil` (
+  `kd_hasil` int(11) NOT NULL,
+  `kd_beasiswa` int(11) NOT NULL,
+  `nis` varchar(200) NOT NULL,
+  `nilai` float NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data untuk tabel `hasil`
+--
+
+INSERT INTO `hasil` (`kd_hasil`, `kd_beasiswa`, `nis`, `nilai`) VALUES
+(1, 1, '11098942', 0.75),
+(2, 1, '201700224', 0.866667),
+(3, 1, '201700421', 0.525),
+(4, 1, '201800332', 0.8),
+(5, 2, '201800332', 0.95),
+(6, 2, '201700421', 0.75);
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `kriteria`
 --
 
 CREATE TABLE `kriteria` (
@@ -55,7 +79,7 @@ CREATE TABLE `kriteria` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `kriteria`
+-- Dumping data untuk tabel `kriteria`
 --
 
 INSERT INTO `kriteria` (`kd_kriteria`, `kd_beasiswa`, `nama`, `sifat`) VALUES
@@ -71,7 +95,7 @@ INSERT INTO `kriteria` (`kd_kriteria`, `kd_beasiswa`, `nama`, `sifat`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `model`
+-- Struktur dari tabel `model`
 --
 
 CREATE TABLE `model` (
@@ -82,7 +106,7 @@ CREATE TABLE `model` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `model`
+-- Dumping data untuk tabel `model`
 --
 
 INSERT INTO `model` (`kd_model`, `kd_beasiswa`, `kd_kriteria`, `bobot`) VALUES
@@ -98,7 +122,7 @@ INSERT INTO `model` (`kd_model`, `kd_beasiswa`, `kd_kriteria`, `bobot`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `nilai`
+-- Struktur dari tabel `nilai`
 --
 
 CREATE TABLE `nilai` (
@@ -109,33 +133,71 @@ CREATE TABLE `nilai` (
   `nilai` float NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data untuk tabel `nilai`
+--
+
+INSERT INTO `nilai` (`kd_nilai`, `kd_beasiswa`, `kd_kriteria`, `nis`, `nilai`) VALUES
+(5, 1, 1, '11098942', 1),
+(6, 1, 2, '11098942', 1),
+(7, 1, 3, '11098942', 3),
+(8, 1, 4, '11098942', 1),
+(9, 1, 1, '201700224', 2),
+(10, 1, 2, '201700224', 1),
+(11, 1, 3, '201700224', 1),
+(12, 1, 4, '201700224', 2),
+(13, 1, 1, '201700421', 1),
+(14, 1, 2, '201700421', 4),
+(15, 1, 3, '201700421', 4),
+(16, 1, 4, '201700421', 2),
+(17, 1, 1, '201800332', 2),
+(18, 1, 2, '201800332', 2),
+(19, 1, 3, '201800332', 3),
+(20, 1, 4, '201800332', 4),
+(21, 2, 5, '201800332', 2),
+(22, 2, 6, '201800332', 1),
+(23, 2, 7, '201800332', 2),
+(24, 2, 8, '201800332', 2),
+(25, 2, 5, '201700421', 2),
+(26, 2, 6, '201700421', 2),
+(27, 2, 7, '201700421', 1),
+(28, 2, 8, '201700421', 4);
+
 -- --------------------------------------------------------
 
 --
--- Table structure for table `pendaftaran`
+-- Struktur dari tabel `pendaftaran`
 --
 
 CREATE TABLE `pendaftaran` (
   `id` int(11) NOT NULL,
   `nis` varchar(200) NOT NULL,
   `kd_beasiswa` int(1) NOT NULL,
-  `dok_skm` varchar(200) NOT NULL,
-  `dok_kp` varchar(200) NOT NULL,
-  `dok_kk` varchar(200) NOT NULL,
-  `dok_rangking` varchar(200) NOT NULL
+  `kelas` int(11) NOT NULL,
+  `tg_ot` int(11) NOT NULL,
+  `pd_ot` int(11) NOT NULL,
+  `peringkat` int(11) NOT NULL,
+  `dok_skm` varchar(200) DEFAULT NULL,
+  `dok_kp` varchar(200) DEFAULT NULL,
+  `dok_kk` varchar(200) DEFAULT NULL,
+  `dok_rangking` varchar(200) DEFAULT NULL,
+  `status` int(1) DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `pendaftaran`
+-- Dumping data untuk tabel `pendaftaran`
 --
 
-INSERT INTO `pendaftaran` (`id`, `nis`, `kd_beasiswa`, `dok_skm`, `dok_kp`, `dok_kk`, `dok_rangking`) VALUES
-(1, '201700421', 1, 'skm.pdf', 'kp.pdf', 'kk.pdf', 'ranking.pdf');
+INSERT INTO `pendaftaran` (`id`, `nis`, `kd_beasiswa`, `kelas`, `tg_ot`, `pd_ot`, `peringkat`, `dok_skm`, `dok_kp`, `dok_kk`, `dok_rangking`, `status`) VALUES
+(10, '201700224', 1, 2, 1, 2, 1, '249023548_4343153242404589_9068352696010569944_n.jpg', '249023548_4343153242404589_9068352696010569944_n2.jpg', '249023548_4343153242404589_9068352696010569944_n1.jpg', 'ranking.pdf', 1),
+(12, '201700224', 1, 4, 4, 3, 2, 'skm.pdf', '249023548_4343153242404589_9068352696010569944_n7.jpg', '249023548_4343153242404589_9068352696010569944_n6.jpg', '249023548_4343153242404589_9068352696010569944_n5.jpg', 1),
+(13, '201700224', 1, 1, 1, 1, 1, 'skm.pdf', '', '249023548_4343153242404589_9068352696010569944_n8.jpg', '', 1),
+(14, '201700224', 2, 2, 2, 3, 2, 'skm.pdf', '10_PROGRAM_PKK_HURUF1.pdf', '10_PROGRAM_PKK_HURUF.pdf', 'folder-blue-music-icon.png', 4);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `penilaian`
+-- Struktur dari tabel `penilaian`
 --
 
 CREATE TABLE `penilaian` (
@@ -147,12 +209,12 @@ CREATE TABLE `penilaian` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `penilaian`
+-- Dumping data untuk tabel `penilaian`
 --
 
 INSERT INTO `penilaian` (`kd_penilaian`, `kd_beasiswa`, `kd_kriteria`, `keterangan`, `bobot`) VALUES
-(1, 1, 1, 'Ada', 1),
-(2, 1, 1, 'Tidak Ada', 2),
+(1, 1, 1, 'Ada', 6),
+(2, 1, 1, 'Tidak Ada', 4),
 (3, 1, 2, '<= 500.000', 1),
 (4, 1, 2, '600.000 - 1.500.000', 2),
 (5, 1, 2, '1.600.000 - 2.500.000', 3),
@@ -165,10 +227,10 @@ INSERT INTO `penilaian` (`kd_penilaian`, `kd_beasiswa`, `kd_kriteria`, `keterang
 (12, 1, 4, 'Kelas 3-4', 2),
 (13, 1, 4, 'Kelas 5', 3),
 (14, 1, 4, 'Kelas 6', 4),
-(15, 2, 5, 'Peringkat 1', 1),
-(16, 2, 5, 'Peringkat 2', 2),
-(17, 2, 5, 'Peringkat 3-4', 3),
-(18, 2, 5, 'Peringkat 5-10', 4),
+(15, 2, 5, 'Peringkat 1', 4),
+(16, 2, 5, 'Peringkat 2', 3),
+(17, 2, 5, 'Peringkat 3-4', 2),
+(18, 2, 5, 'Peringkat 5-10', 1),
 (19, 2, 6, '<= 500.000', 1),
 (20, 2, 6, '600.000 - 1.500.000', 2),
 (21, 2, 6, '1.600.000 - 2.500.000', 3),
@@ -176,12 +238,16 @@ INSERT INTO `penilaian` (`kd_penilaian`, `kd_beasiswa`, `kd_kriteria`, `keterang
 (23, 2, 7, '1 ORANG ANAK', 1),
 (24, 2, 7, '2 ORANG ANAK', 2),
 (25, 2, 7, '3 ORANG ANAK', 3),
-(26, 2, 7, '4 ORANG ANAK', 0);
+(26, 2, 7, '4 ORANG ANAK', 0),
+(27, 2, 8, 'Kelas 1-2', 1),
+(28, 2, 8, 'Kelas 3-4', 2),
+(29, 2, 8, 'Kelas 5', 3),
+(30, 2, 8, 'Kelas 6', 4);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `user`
+-- Struktur dari tabel `user`
 --
 
 CREATE TABLE `user` (
@@ -201,19 +267,19 @@ CREATE TABLE `user` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `user`
+-- Dumping data untuk tabel `user`
 --
 
 INSERT INTO `user` (`nis`, `name`, `tanggal_lahir`, `jenis_kelamin`, `email`, `alamat`, `no_tlp`, `image`, `password`, `file`, `role_id`, `is_active`, `date_created`) VALUES
-(11098942, 'Muhamad Miqdam Agill', '2021-08-03', 'Laki-laki', 'agilmiqdam@yahoo.com', 'JAKARTA', '1111111112', 'FXXH9928.JPG', '$2y$10$PdaHgzMo0uB4CrAzBwzODO9C/IwZ3LNz56IL5LT2cj0frzAjcnWqi', '', 1, 1, 1624699531),
-(201700224, 'sadam', '2020-09-01', 'Laki-laki', 'sadaam@gmail.com', 'SAMARINDA', '2398427423', 'download_(3).jpg', '$2y$10$kvT5hVNeHtMI68S22wIolOAQ8AHoqhmw9oqI8G.nrRi8BXf7WCzdO', '', 2, 1, 1631481569),
-(201700421, 'Andriee', '2011-09-06', 'Laki-laki', 'andri@gmail.com', 'Tangerang', '0897654', 'avatar.jpg', '$2y$10$ehZ1BdBpdbqX0gQmUX3CzuYmmTneQw8TVGi5dttKVDrP8DJTnk9bS', '', 2, 1, 1635393872),
-(201800332, 'agil', '1999-11-17', 'Laki-laki', 'agilmiqdam@gmail.com', '', '', 'avatar2.jpg', '$2y$10$tnAVbY3A1fH5IV0QYbAsYuaabtFDnoVU3CLu8a5Ekbs4fj/2.KtA2', '', 2, 1, 1624699463);
+(11098942, 'Muhamad Miqdam Agill', '2021-08-03', 'Laki-laki', 'agilmiqdam@yahoo.com', 'JAKARTA', '1111111112', 'FXXH9928.JPG', '$2y$10$sGU3jkw8n8HM.H2Hz45XZORnYH3hZCQkvLjEHGqhO9oU4uTTbUpSW', '', 1, 1, 1624699531),
+(201700224, 'sadam', '2020-09-01', 'Laki-laki', 'sadaam@gmail.com', 'SAMARINDA', '2398427423', 'download_(3).jpg', '$2y$10$sGU3jkw8n8HM.H2Hz45XZORnYH3hZCQkvLjEHGqhO9oU4uTTbUpSW', '', 2, 1, 1631481569),
+(201700421, 'Andriee', '2011-09-06', 'Laki-laki', 'andri@gmail.com', 'Tangerang', '0897654', 'avatar.jpg', '$2y$10$sGU3jkw8n8HM.H2Hz45XZORnYH3hZCQkvLjEHGqhO9oU4uTTbUpSW', '', 2, 1, 1635393872),
+(201800332, 'agil', '1999-11-17', 'Laki-laki', 'agilmiqdam@gmail.com', '', '', 'avatar2.jpg', '$2y$10$sGU3jkw8n8HM.H2Hz45XZORnYH3hZCQkvLjEHGqhO9oU4uTTbUpSW', '', 2, 1, 1624699463);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `user_access_menu`
+-- Struktur dari tabel `user_access_menu`
 --
 
 CREATE TABLE `user_access_menu` (
@@ -223,7 +289,7 @@ CREATE TABLE `user_access_menu` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `user_access_menu`
+-- Dumping data untuk tabel `user_access_menu`
 --
 
 INSERT INTO `user_access_menu` (`id`, `role_id`, `menu_id`) VALUES
@@ -235,7 +301,7 @@ INSERT INTO `user_access_menu` (`id`, `role_id`, `menu_id`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `user_menu`
+-- Struktur dari tabel `user_menu`
 --
 
 CREATE TABLE `user_menu` (
@@ -244,7 +310,7 @@ CREATE TABLE `user_menu` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `user_menu`
+-- Dumping data untuk tabel `user_menu`
 --
 
 INSERT INTO `user_menu` (`id`, `menu`) VALUES
@@ -255,7 +321,7 @@ INSERT INTO `user_menu` (`id`, `menu`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `user_role`
+-- Struktur dari tabel `user_role`
 --
 
 CREATE TABLE `user_role` (
@@ -264,7 +330,7 @@ CREATE TABLE `user_role` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `user_role`
+-- Dumping data untuk tabel `user_role`
 --
 
 INSERT INTO `user_role` (`id`, `role`) VALUES
@@ -274,7 +340,7 @@ INSERT INTO `user_role` (`id`, `role`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `user_sub_menu`
+-- Struktur dari tabel `user_sub_menu`
 --
 
 CREATE TABLE `user_sub_menu` (
@@ -287,7 +353,7 @@ CREATE TABLE `user_sub_menu` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `user_sub_menu`
+-- Dumping data untuk tabel `user_sub_menu`
 --
 
 INSERT INTO `user_sub_menu` (`id`, `menu_id`, `title`, `url`, `icon`, `is_active`) VALUES
@@ -308,20 +374,26 @@ INSERT INTO `user_sub_menu` (`id`, `menu_id`, `title`, `url`, `icon`, `is_active
 --
 
 --
--- Indexes for table `beasiswa`
+-- Indeks untuk tabel `beasiswa`
 --
 ALTER TABLE `beasiswa`
   ADD PRIMARY KEY (`kd_beasiswa`);
 
 --
--- Indexes for table `kriteria`
+-- Indeks untuk tabel `hasil`
+--
+ALTER TABLE `hasil`
+  ADD PRIMARY KEY (`kd_hasil`);
+
+--
+-- Indeks untuk tabel `kriteria`
 --
 ALTER TABLE `kriteria`
   ADD PRIMARY KEY (`kd_kriteria`),
   ADD KEY `kd_beasiswa` (`kd_beasiswa`);
 
 --
--- Indexes for table `model`
+-- Indeks untuk tabel `model`
 --
 ALTER TABLE `model`
   ADD PRIMARY KEY (`kd_model`),
@@ -329,7 +401,7 @@ ALTER TABLE `model`
   ADD KEY `kd_kriteria` (`kd_kriteria`);
 
 --
--- Indexes for table `nilai`
+-- Indeks untuk tabel `nilai`
 --
 ALTER TABLE `nilai`
   ADD PRIMARY KEY (`kd_nilai`),
@@ -338,7 +410,7 @@ ALTER TABLE `nilai`
   ADD KEY `nis` (`nis`);
 
 --
--- Indexes for table `pendaftaran`
+-- Indeks untuk tabel `pendaftaran`
 --
 ALTER TABLE `pendaftaran`
   ADD PRIMARY KEY (`id`),
@@ -346,7 +418,7 @@ ALTER TABLE `pendaftaran`
   ADD KEY `nis` (`nis`);
 
 --
--- Indexes for table `penilaian`
+-- Indeks untuk tabel `penilaian`
 --
 ALTER TABLE `penilaian`
   ADD PRIMARY KEY (`kd_penilaian`),
@@ -354,95 +426,101 @@ ALTER TABLE `penilaian`
   ADD KEY `kd_kriteria` (`kd_kriteria`);
 
 --
--- Indexes for table `user`
+-- Indeks untuk tabel `user`
 --
 ALTER TABLE `user`
   ADD PRIMARY KEY (`nis`);
 
 --
--- Indexes for table `user_access_menu`
+-- Indeks untuk tabel `user_access_menu`
 --
 ALTER TABLE `user_access_menu`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `user_menu`
+-- Indeks untuk tabel `user_menu`
 --
 ALTER TABLE `user_menu`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `user_role`
+-- Indeks untuk tabel `user_role`
 --
 ALTER TABLE `user_role`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `user_sub_menu`
+-- Indeks untuk tabel `user_sub_menu`
 --
 ALTER TABLE `user_sub_menu`
   ADD PRIMARY KEY (`id`);
 
 --
--- AUTO_INCREMENT for dumped tables
+-- AUTO_INCREMENT untuk tabel yang dibuang
 --
 
 --
--- AUTO_INCREMENT for table `beasiswa`
+-- AUTO_INCREMENT untuk tabel `beasiswa`
 --
 ALTER TABLE `beasiswa`
   MODIFY `kd_beasiswa` int(15) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- AUTO_INCREMENT for table `kriteria`
+-- AUTO_INCREMENT untuk tabel `hasil`
+--
+ALTER TABLE `hasil`
+  MODIFY `kd_hasil` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
+-- AUTO_INCREMENT untuk tabel `kriteria`
 --
 ALTER TABLE `kriteria`
   MODIFY `kd_kriteria` int(15) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
--- AUTO_INCREMENT for table `model`
+-- AUTO_INCREMENT untuk tabel `model`
 --
 ALTER TABLE `model`
   MODIFY `kd_model` int(15) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
--- AUTO_INCREMENT for table `nilai`
+-- AUTO_INCREMENT untuk tabel `nilai`
 --
 ALTER TABLE `nilai`
-  MODIFY `kd_nilai` int(15) NOT NULL AUTO_INCREMENT;
+  MODIFY `kd_nilai` int(15) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 
 --
--- AUTO_INCREMENT for table `pendaftaran`
+-- AUTO_INCREMENT untuk tabel `pendaftaran`
 --
 ALTER TABLE `pendaftaran`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
--- AUTO_INCREMENT for table `penilaian`
+-- AUTO_INCREMENT untuk tabel `penilaian`
 --
 ALTER TABLE `penilaian`
-  MODIFY `kd_penilaian` int(15) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+  MODIFY `kd_penilaian` int(15) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 
 --
--- AUTO_INCREMENT for table `user_access_menu`
+-- AUTO_INCREMENT untuk tabel `user_access_menu`
 --
 ALTER TABLE `user_access_menu`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
--- AUTO_INCREMENT for table `user_menu`
+-- AUTO_INCREMENT untuk tabel `user_menu`
 --
 ALTER TABLE `user_menu`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
--- AUTO_INCREMENT for table `user_role`
+-- AUTO_INCREMENT untuk tabel `user_role`
 --
 ALTER TABLE `user_role`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- AUTO_INCREMENT for table `user_sub_menu`
+-- AUTO_INCREMENT untuk tabel `user_sub_menu`
 --
 ALTER TABLE `user_sub_menu`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
