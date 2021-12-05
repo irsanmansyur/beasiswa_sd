@@ -134,6 +134,16 @@ class User extends CI_Controller
 	{
 		$data['title'] = 'HASIL SELEKSI';
 		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+		$data['beasiswas'] = $this->db->get("beasiswa")->result();
+
+		if ($this->input->get_post("kd_beasiswa"))
+			$this->db->where("pendaftaran.kd_beasiswa", $this->input->get_post("kd_beasiswa"));
+		$data['pendaftarans'] = $this->db->where("status", STATUS_DITERIMA)
+			->join("user", "user.nis=pendaftaran.nis")
+			->select('user.name as nama_siswa')
+			->join("beasiswa", "beasiswa.kd_beasiswa=pendaftaran.kd_beasiswa")
+			->select('beasiswa.name as nama_beasiswa')
+			->get("pendaftaran")->result();
 
 		$this->load->view('templates/header', $data);
 		$this->load->view('templates/sidebar', $data);
